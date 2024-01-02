@@ -23,6 +23,19 @@ pub struct SIZED_STRING {
     pub c_string: __IncompleteArrayField<::std::os::raw::c_char>,
 }
 
+#[cfg(target_os = "linux")]
+impl Debug for YR_SCAN_CONTEXT {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::result::Result<(), std::fmt::Error> {
+        // Basic implementation just to satisfy derive Debug
+        // We don't need all of the fields for now
+        f.debug_struct("YR_SCAN_CONTEXT")
+            .field("file_size", &self.file_size)
+            .field("entry_point", &self.entry_point)
+            .finish()
+    }
+}
+
+#[cfg(target_os = "windows")]
 impl Debug for YR_SCAN_CONTEXT {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::result::Result<(), std::fmt::Error> {
         // Basic implementation just to satisfy derive Debug

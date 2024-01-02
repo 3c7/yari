@@ -43,6 +43,15 @@ fn link_linux() {
     link_lib("z");
 }
 
+#[cfg(target_os = "macos")]
+fn link_macos() {
+    println!("cargo:rustc-link-lib=static=yara");
+    link_lib("crypto");
+    link_lib("magic");
+    link_lib("jansson");
+    link_lib("z");
+}
+
 fn main() {
     let ignored_macros = IgnoreMacros(
         vec![
@@ -59,6 +68,9 @@ fn main() {
 
     #[cfg(target_os = "linux")]
     link_linux();
+
+    #[cfg(target_os = "macos")]
+    link_macos();
 
     #[cfg(target_os = "windows")]
     link_windows();
