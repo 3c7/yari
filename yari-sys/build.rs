@@ -131,7 +131,12 @@ fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
     let out_path = PathBuf::from(out_dir).join("bindings.rs");
     if use_bundled_bindings.is_some() {
+        #[warn(unused_variables)]
         let binding_file = "bindings-unix.rs";
+
+        // Use different bindings on macOS.
+        #[cfg(target_os = "macos")]
+        let binding_file = "bindings-macos.rs";
         fs::copy(PathBuf::from("bindings").join(binding_file), out_path)
             .expect("Could not copy bindings to output directory");
     } else if let Some(bindings_file) = option_env!("YARI_BINDINGS_FILE") {
