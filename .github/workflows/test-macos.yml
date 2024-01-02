@@ -10,7 +10,7 @@ env:
 jobs:
   build:
 
-    runs-on: macos-arm64-xlarge
+    runs-on: macos-latest-xlarge
     steps:
     - name: Checkout sources
       uses: actions/checkout@v3
