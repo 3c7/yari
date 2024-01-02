@@ -28,5 +28,7 @@ jobs:
       run: cd yari-py && python3.12 -mvenv .venv && .venv/bin/pip install maturin pytest && CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" .venv/bin/maturin build --release -i python3.10 -i python3.11 -i python3.12
     - name: Run Rust tests
       run: CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" cargo test --verbose
+    - name: Run Rust tests with bundled bindings
+      run: cargo clean && YARI_USE_BUNDLED_BINDINGS=1 CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" cargo test --verbose
     - name: Run Python tests
       run: cd yari-py && .venv/bin/maturin develop && .venv/bin/pytest

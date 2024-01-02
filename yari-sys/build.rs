@@ -131,7 +131,7 @@ fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
     let out_path = PathBuf::from(out_dir).join("bindings.rs");
     if use_bundled_bindings.is_some() {
-        #[warn(unused_variables)]
+        #[allow(unused_variables)]
         let binding_file = "bindings-unix.rs";
 
         // Use different bindings on macOS.
