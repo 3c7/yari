@@ -19,8 +19,8 @@ jobs:
     - name: Install Dependencies
       run: brew install autoconf automake libtool pkg-config jansson libmagic openssl python@3.12
     - name: Build Yara
-      run: cd yari-sys/yara && ./bootstrap.sh && CFLAGS="-fPIC -I/opt/homebrew/include" LDFLAGS="-L/opt/homebrew/lib $LDFLAGS" LIBRARY_PATH="/opt/homebrew/lib:$LIBRARY_PATH" ./configure --enable-debug --disable-shared --enable-static --enable-cuckoo --enable-magic --enable-dotnet --with-crypto && make
+      run: cd yari-sys/yara && ./bootstrap.sh && CFLAGS="-fPIC -I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" ./configure --enable-debug --disable-shared --enable-static --enable-cuckoo --enable-magic --enable-dotnet --with-crypto && make
     - name: Build Yari (yari-sys)
-      run: CFLAGS="-I/opt/homebrew/include" LDFLAGS="-L/opt/homebrew/lib $LDFLAGS" LIBRARY_PATH="/opt/homebrew/lib:$LIBRARY_PATH" cargo build --verbose
+      run: CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" cargo build --verbose
     - name: Run Rust tests
-      run: CFLAGS="-I/opt/homebrew/include" LDFLAGS="-L/opt/homebrew/lib $LDFLAGS" LIBRARY_PATH="/opt/homebrew/lib:$LIBRARY_PATH" cargo test --verbose
+      run: CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" cargo test --verbose
