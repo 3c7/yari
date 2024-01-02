@@ -21,10 +21,12 @@ jobs:
     - name: Build Yara
       run: cd yari-sys/yara && ./bootstrap.sh && CFLAGS="-fPIC -I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" ./configure --enable-debug --disable-shared --enable-static --enable-cuckoo --enable-magic --enable-dotnet --with-crypto && make
     - name: Build Yari (yari-sys)
-      run: cd yari-sys && CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" cargo build --verbose --release
+      run: cd yari-sys && CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" cargo build --release
     - name: Build Yari (yari-cli)
-      run: cd yari-cli && CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" cargo build --verbose --release
+      run: cd yari-cli && CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" cargo build --release
     - name: Build Yari (yari-py)
-      run: cd yari-py && python3.12 -mvenv venv-maturin && venv-maturin/bin/pip install maturin && CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" venv-maturin/bin/maturin build -i python3.10 -i python3.11 -i python3.12
+      run: cd yari-py && python3.12 -mvenv .venv && .venv/bin/pip install maturin pytest && CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" .venv/bin/maturin build --release -i python3.10 -i python3.11 -i python3.12
     - name: Run Rust tests
       run: CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib $LDFLAGS" LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH" cargo test --verbose
+    - name: Run Python tests
+      run: cd yari-py && .venv/bin/maturin develop && .venv/bin/pytest
